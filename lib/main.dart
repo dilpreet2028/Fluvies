@@ -44,6 +44,20 @@ class HomeStatePage extends State<HomePage> {
 
   }
 
+  Future<String> initDb() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    print(documentsDirectory);
+    String path = join(documentsDirectory.path, "movies.db");
+    if (!await new Directory(dirname(path)).exists()) {
+      try {
+        await new Directory(dirname(path)).create(recursive: true);
+      } catch (e) {
+        print(e);
+      }
+    }
+    return path;
+  }
+
   Widget loadPage() {
     Widget widget;
     switch (_page) {

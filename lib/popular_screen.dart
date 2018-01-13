@@ -20,12 +20,28 @@ class PopularScreenState extends State<PopularScreen> implements PopularScreenVi
   List<Movie> movies;
   PopularScreenPresenter _presenter;
 
+  Future<String> initDb() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    print(documentsDirectory);
+    String path = join(documentsDirectory.path, "movies.db");
+    if (!await new Directory(dirname(path)).exists()) {
+      try {
+        await new Directory(dirname(path)).create(recursive: true);
+      } catch (e) {
+        print(e);
+      }
+    }
+    return path;
+  }
+
+
   @override
   void initState() {
     super.initState();
     movies = new List();
-    _presenter = new PopularScreenPresenter(this);
-    _presenter.loadMovies();
+    initDb().then((path) {
+      _presenter = new PopularScreenPresenter(this, path);
+    });
   }
 
   @override
