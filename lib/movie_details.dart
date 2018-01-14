@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluvies/models/Movie.dart';
+import 'package:fluvies/data/models/Movie.dart';
 import 'package:fluvies/custom_widgets/FlexibleAppBar.dart';
 
 class MovieDetails extends StatefulWidget {

@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fluvies/models/Movie.dart';
+import 'package:fluvies/data/models/Movie.dart';
 import 'package:fluvies/custom_widgets/movies_grid.dart';
-import 'package:fluvies/popular_screen_presenter.dart';
+import 'package:fluvies/popular_screen/popular_screen_presenter.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -20,28 +20,12 @@ class PopularScreenState extends State<PopularScreen> implements PopularScreenVi
   List<Movie> movies;
   PopularScreenPresenter _presenter;
 
-  Future<String> initDb() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    print(documentsDirectory);
-    String path = join(documentsDirectory.path, "movies.db");
-    if (!await new Directory(dirname(path)).exists()) {
-      try {
-        await new Directory(dirname(path)).create(recursive: true);
-      } catch (e) {
-        print(e);
-      }
-    }
-    return path;
-  }
-
-
   @override
   void initState() {
     super.initState();
     movies = new List();
-    initDb().then((path) {
-      _presenter = new PopularScreenPresenter(this, path);
-    });
+    _presenter = new PopularScreenPresenter(this);
+    _presenter.loadMovies();
   }
 
   @override

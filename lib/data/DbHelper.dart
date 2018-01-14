@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fluvies/models/Movie.dart';
+import 'package:fluvies/data/models/Movie.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,7 +18,7 @@ class DbHelper {
   final String tag = "tag";
 
   Future open(String path) async {
-
+    print("open db $path");
     _db = await openDatabase(path, version: 1, onCreate: (Database db, int ver) async {
       await db.execute('''create table $tbName ( $id integer primary key ,
       $name text not null, $poster text not null, $backdrop text not null, 
@@ -38,11 +38,11 @@ class DbHelper {
   }
 
   Future insertMovies(List<Movie> movies, String movieTag) async {
+    await _db.delete(tbName, where: "$tag = ?", whereArgs: [movieTag]);
     Batch batch = _db.batch();
-    movies.map((movie) {
+    for (Movie movie in movies) {
       batch.insert(tbName, toMap(movie, movieTag));
-      print(movie.name);
-    });
+    }
     await batch.commit();
   }
 

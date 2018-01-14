@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:fluvies/DbHelper.dart';
-import 'package:fluvies/models/Movie.dart';
-import 'package:fluvies/network/network_data.dart';
+import 'package:fluvies/data/DbHelper.dart';
+import 'package:fluvies/data/models/Movie.dart';
+import 'package:fluvies/data/network/network_data.dart';
 
 class Injector {
 
@@ -17,6 +17,10 @@ class Injector {
 
   factory Injector() {
     return injector;
+  }
+
+  Future setupDbPath(String path) async {
+    await _dbHelper.open(path);
   }
 
   NetworkData get networkData => _networkData;

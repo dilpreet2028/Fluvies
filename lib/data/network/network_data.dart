@@ -1,6 +1,6 @@
-import 'network_util.dart';
+import 'package:fluvies/data/network/network_util.dart';
 import 'dart:async';
-import 'package:fluvies/models/Movie.dart';
+import 'package:fluvies/data/models/Movie.dart';
 
 class NetworkData {
   NetworkUtil _networkUtil;

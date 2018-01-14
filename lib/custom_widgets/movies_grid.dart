@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluvies/models/Movie.dart';
+import 'package:fluvies/data/models/Movie.dart';
 import 'package:fluvies/movie_details.dart';
 import 'package:meta/meta.dart';
 import 'package:fluvies/Injector.dart';

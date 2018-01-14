@@ -1,6 +1,6 @@
-import 'package:fluvies/DbHelper.dart';
+import 'package:fluvies/data/DbHelper.dart';
 import 'package:fluvies/Injector.dart';
-import 'package:fluvies/models/Movie.dart';
+import 'package:fluvies/data/models/Movie.dart';
 
 
 abstract class PopularScreenView {
@@ -14,12 +14,9 @@ class PopularScreenPresenter {
   Injector _injector;
   DbHelper dbHelper;
 
-  PopularScreenPresenter(this._view, this.path) {
+  PopularScreenPresenter(this._view) {
     _injector = new Injector();
-    dbHelper = new DbHelper();
-    dbHelper.open(path).then((dynamic){
-      loadMovies();
-    });
+    dbHelper = _injector.dbHelper;
   }
 
   void loadMovies() {
@@ -31,7 +28,9 @@ class PopularScreenPresenter {
 
     _injector.fetchPopularMovie().then((list) {
       _view.onMoviesLoaded(list);
-
+      dbHelper.insertMovies(list, "popular").then((dynamic) {
+        print("Db updated with new movies");
+      });
     });
   }
 
