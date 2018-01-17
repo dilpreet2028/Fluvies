@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluvies/data/models/Movie.dart';
-import 'package:fluvies/movie_details.dart';
+import 'package:fluvies/movie_details_screen.dart';
 import 'package:meta/meta.dart';
 import 'package:fluvies/Injector.dart';
 
@@ -33,6 +33,7 @@ Widget getMoviesGrid({@required List<Movie> movies, @required BuildContext
               child: new Hero(
                 tag: movie.id,
                 child: new Image.network(
+
                   movie.backdrop,
                   fit: BoxFit.cover,
                 ),

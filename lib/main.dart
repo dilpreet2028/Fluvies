@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluvies/Injector.dart';
 import 'package:fluvies/data/models/Movie.dart';
+import 'package:fluvies/liked_screen/liked_screen.dart';
 import 'package:fluvies/popular_screen/popular_screen.dart';
+import 'package:fluvies/upcoming_screen/upcoming_screen.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -48,8 +50,13 @@ class HomeStatePage extends State<HomePage> {
     if (snapshot.connectionState == ConnectionState.done && !snapshot.hasError) {
       switch (_page) {
         case 0:
-          print("UI shown");
           widget = new PopularScreen();
+          break;
+        case 1:
+          widget = new UpcomingScreen();
+          break;
+        case 2:
+          widget = new LikedScreen();
           break;
       }
     }
@@ -69,9 +76,14 @@ class HomeStatePage extends State<HomePage> {
           builder: _loadPage,
           future: _documentsDirectory.then((directory) async {
             String path = join(directory.path, "movies.db");
-            print("Init connection");
+            if (!await new Directory(dirname(path)).exists()) {
+              try {
+                await new Directory(dirname(path)).create(recursive: true);
+              } catch (e) {
+                print(e);
+              }
+            }
             await new Injector().setupDbPath(path);
-            print("Database connected");
           }),
       ),
       bottomNavigationBar: new BottomNavigationBar(
@@ -88,18 +100,13 @@ class HomeStatePage extends State<HomePage> {
                 title: new Text("Upcoming")
             ),
             new BottomNavigationBarItem(
-                icon: new Icon(Icons.save),
-                title: new Text("Saved")
+                icon: new Icon(Icons.favorite),
+                title: new Text("Liked")
             ),
           ]
       ),
     );
 
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
 }

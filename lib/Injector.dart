@@ -27,8 +27,4 @@ class Injector {
 
   DbHelper get dbHelper => _dbHelper;
 
-  Future<List<Movie>> fetchPopularMovie() {
-    return _networkData.fetchPopularMovies();
-  }
-
 }

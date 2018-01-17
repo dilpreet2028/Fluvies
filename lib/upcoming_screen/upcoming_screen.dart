@@ -1,28 +1,25 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:fluvies/data/models/Movie.dart';
 import 'package:fluvies/custom_widgets/movies_grid.dart';
-import 'package:fluvies/popular_screen/popular_screen_presenter.dart';
+import 'package:fluvies/upcoming_screen/upcoming_screen_presenter.dart';
 
-class PopularScreen extends StatefulWidget {
+class UpcomingScreen extends StatefulWidget {
 
   @override
-  State createState() => new PopularScreenState();
+  State createState() => new UpcomingScreenState();
 }
 
-class PopularScreenState extends State<PopularScreen> implements PopularScreenView {
+class UpcomingScreenState extends State<UpcomingScreen> implements UpcomingScreenView {
 
   bool _isLoading = true;
   List<Movie> movies;
-  PopularScreenPresenter _presenter;
+  UpcomingScreenPresenter _presenter;
 
   @override
   void initState() {
     super.initState();
     movies = new List();
-    _presenter = new PopularScreenPresenter(this, "popular");
+    _presenter = new UpcomingScreenPresenter(this, "upcoming");
     _presenter.loadMovies();
   }
 
@@ -45,7 +42,7 @@ class PopularScreenState extends State<PopularScreen> implements PopularScreenVi
 
     if (_isLoading) {
       widget = new Center(
-        child: new CircularProgressIndicator()
+          child: new CircularProgressIndicator()
       );
     } else {
       return getMoviesGrid(movies: movies, context: context, crossAxisCount: 2);
