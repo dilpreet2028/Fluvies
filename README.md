@@ -11,17 +11,17 @@ A basic Flutter app showing:
 - Using `pathprovider` for creating and accessing a database file (works in both iOS and Android)
 - Screen Transaction animation using `Hero` and `InkWell`
 
-##Demo
+## Demo
 
-![Fluvies_Demo](https://raw.githubusercontent.com/dilpreet2028/fluvies/master/graphic/demo.gif)
+![Fluvies_Demo](https://github.com/dilpreet96/Fluvies/blob/master/graphic/demo.gif)
 
-##Setup
-1.For installing and setting up[Flutter](https://flutter.io/setup/)
+## Setup
+1.For installing and setting up [Flutter](https://flutter.io/setup/)
 
-2.You need a**TMDB API Key**for which you can go to this[link](https://developers.themoviedb.org/3/getting-started/introduction).
+2.You need a **TMDB API Key**for which you can go to this [link](https://developers.themoviedb.org/3/getting-started/introduction).
 When you get the key, place it in `network_data.dart`.
 
-##License
+## License
 ```
 Copyright 2018 Dilpreet Singh (dilpreet96)
 
