@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluvies/custom_widgets/photo_hero.dart';
 import 'package:fluvies/data/models/Movie.dart';
 import 'package:fluvies/movie_details_screen.dart';
 import 'package:meta/meta.dart';
@@ -24,20 +25,13 @@ Widget getMoviesGrid({@required List<Movie> movies, @required BuildContext
       children: movies.map((movie) =>
       new Card(
         child: new  GridTile(
-            child: new GestureDetector(
+            child: new PhotoHero(
+              photo: movie.backdrop,
               onTap: () {
-                Navigator.push(context, new MaterialPageRoute(builder: (context){
+                Navigator.push(context, new MaterialPageRoute(builder: (context) {
                   return new MovieDetails(movie);
                 }));
               },
-              child: new Hero(
-                tag: movie.id,
-                child: new Image.network(
-
-                  movie.backdrop,
-                  fit: BoxFit.cover,
-                ),
-              ),
             ),
             footer: new GridTileBar(
                 backgroundColor: Colors.black45,

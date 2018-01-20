@@ -4,7 +4,7 @@ import 'package:fluvies/data/models/Movie.dart';
 
 class NetworkData {
   NetworkUtil _networkUtil;
-  final String apiKey = "7416e5acdb6164eb2bac095b0d7c552e";
+  final String apiKey = "PLACE_YOUR_API_KEY_HERE";
 
   NetworkData() {
     _networkUtil = new NetworkUtil();
@@ -23,7 +23,15 @@ class NetworkData {
         "api_key=$apiKey&language=en-US&page=1")
         .then((dynamic res) {
       List data = res['results'];
-      return data.map((obj) => new Movie.map(obj)).toList();
+      List<Movie> movies =  data.map((obj) {
+        try {
+          return new Movie.map(obj);
+        } catch (ex) {
+          return null;
+        }
+      }).toList();
+      movies.removeWhere((movie) => movie == null);
+      return movies;
     });
 
 }

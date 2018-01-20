@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluvies/Injector.dart';
+import 'package:fluvies/data/db_path.dart';
 import 'package:fluvies/data/models/Movie.dart';
 import 'package:fluvies/liked_screen/liked_screen.dart';
 import 'package:fluvies/popular_screen/popular_screen.dart';
@@ -83,7 +84,7 @@ class HomeStatePage extends State<HomePage> {
                 print(e);
               }
             }
-            await new Injector().setupDbPath(path);
+            new DbPath().path = path;
           }),
       ),
       bottomNavigationBar: new BottomNavigationBar(

@@ -1,5 +1,5 @@
 import 'package:fluvies/base/screen_view.dart';
-import 'package:fluvies/data/DbHelper.dart';
+import 'package:fluvies/data/db_helper.dart';
 import 'package:fluvies/Injector.dart';
 import 'package:fluvies/data/network/network_data.dart';
 

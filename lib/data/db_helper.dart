@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fluvies/data/db_path.dart';
 import 'package:fluvies/data/models/Movie.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
   Database _db;
-  String path;
   final String tbName = "movies";
   final String autoIncrementId = "autoIncrementId";
   final String id = "id";
@@ -16,7 +16,18 @@ class DbHelper {
   final String desc = "desc";
   final String tag = "tag";
 
-  Future open(String path) async {
+  static final DbHelper dbHelper = new DbHelper._helper();
+
+  factory DbHelper() {
+    return dbHelper;
+  }
+
+  DbHelper._helper() {
+    print("opening");
+    _open(new DbPath().path);
+  }
+
+  Future _open(String path) async {
     _db = await openDatabase(path, version: 1, onCreate: (Database db, int ver) async {
       await db.execute('''create table $tbName ( $autoIncrementId integer 
       primary key autoincrement, $id integer , $name text not null, 

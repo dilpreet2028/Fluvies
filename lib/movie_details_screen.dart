@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluvies/Injector.dart';
-import 'package:fluvies/data/DbHelper.dart';
+import 'package:fluvies/custom_widgets/photo_hero.dart';
+import 'package:fluvies/data/db_helper.dart';
 import 'package:fluvies/data/models/Movie.dart';
-import 'package:fluvies/custom_widgets/FlexibleAppBar.dart';
 
 class MovieDetails extends StatefulWidget {
 
@@ -26,68 +27,62 @@ class MovieDetailsState extends State<MovieDetails> {
   DbHelper _dbHelper;
   final String _tag = "liked";
 
-  Widget _loadData(BuildContext context, AsyncSnapshot<bool> snapshot) {
-    Widget widget = new Container(width: 0.0, height: 0.0);
-    if (snapshot.connectionState == ConnectionState.done && !snapshot.hasError) {
+  Future searchMovie() async {
+    isMovieSaved = await _dbHelper.checkMovie(_movie.id, _tag);
+    setState((){
+      // refresh ui
+    });
+  }
 
-      widget = new IconButton(
-        icon: new Icon(Icons.favorite),
-        onPressed: () async {
-          if (isMovieSaved) {
-            await _dbHelper.delete(_movie.id, _tag);
-          } else {
-            await _dbHelper.insert(_movie, _tag);
-          }
-          setState(() {
-            //refreshing ui
-          });
-        },
-        color: isMovieSaved ? Colors.red : null,
-      );
-    }
-    return widget;
+  @override
+  void initState() {
+    super.initState();
+    _dbHelper = new Injector().dbHelper;
   }
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    _dbHelper = new Injector().dbHelper;
+    searchMovie();
 
     return new Scaffold(
-      body: new CustomScrollView(
-          slivers: [
-            new SliverAppBar(
-              expandedHeight: _appBarHeight,
-              flexibleSpace: new FlexibleAppBar("", _movie.backdrop, _movie.id),
+      body: new Column(
+        children: <Widget>[
+            new PhotoHero(
+            photo: _movie.backdrop,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
-            new SliverList(
-                delegate: new SliverChildListDelegate([
-                  new Container(
-                    padding: const EdgeInsets.all(16.0),
-                    child: new Row(
-                      children: <Widget>[
-                        new Flexible(
-                          child: new Text(_movie.name, style: textTheme.headline),
-                        ),
-                        new FutureBuilder<bool>(
-                          builder: _loadData,
-                          future: _dbHelper.checkMovie(_movie.id, _tag).then((res) {
-                            isMovieSaved = res;
-                          }),
-                        )
-                      ]
-                    ),
+          new Container(
+            padding: const EdgeInsets.all(16.0),
+            child: new Row(
+                children: <Widget>[
+                  new Flexible(
+                    child: new Text(_movie.name, style: textTheme.headline),
                   ),
-                  new Container(
-                      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-                      child: new Text(_movie.desc, style: textTheme.subhead)
+                  new IconButton(
+                    icon: new Icon(Icons.favorite),
+                    onPressed: () async {
+                      if (isMovieSaved) {
+                        await _dbHelper.delete(_movie.id, _tag);
+                      } else {
+                        await _dbHelper.insert(_movie, _tag);
+                      }
+                      searchMovie();
+                    },
+                    color: isMovieSaved ? Colors.red : null,
                   ),
 
-                ])
-            )
-          ]
-      ),
+                ]
+            ),
+          ),
+          new Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+              child: new Text(_movie.desc, style: textTheme.subhead)
+          ),
+        ],
+      )
     );
-
   }
 }
